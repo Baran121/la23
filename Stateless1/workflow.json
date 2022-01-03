@@ -8,7 +8,7 @@
                 "inputs": {
                     "statusCode": 200,
                     "body": {
-                        "status": "Success"
+                        "code": "success"
                     }
                 },
                 "runAfter": {}

@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "aks7-f0ec"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "aks7-f0ec"
+  template:
+    metadata:
+      labels:
+        app: "aks7-f0ec"
+    spec:
+      containers:
+        - name: "aks7-f0ec"
+          image: "myownacr.azurecr.io/aks7"
+          ports:
+          - containerPort: 80

@@ -3,6 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "WORKFLOWS_SUBSCRIPTION_ID": ""
+    "WORKFLOWS_SUBSCRIPTION_ID": "",
+    "serviceBus_connectionString": "Endpoint=sb://sbaraneebus.servicebus.windows.net/;SharedAccessKeyName=neoran;SharedAccessKey=jmMddIIsi+unfHbk/Mq8m2tI6JEjj4x4wDFA93gaCgE=;"
   }
 }

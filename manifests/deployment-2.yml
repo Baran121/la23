@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "myownacr-c95e"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "myownacr-c95e"
+  template:
+    metadata:
+      labels:
+        app: "myownacr-c95e"
+    spec:
+      containers:
+        - name: "myownacr-c95e"
+          image: "myownacr.azurecr.io/myownacr"
+          ports:
+          - containerPort: 80

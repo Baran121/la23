@@ -7,11 +7,39 @@
                 "kind": "http",
                 "inputs": {
                     "statusCode": 200,
-                    "body": {
-                        "code": "success"
+                    "body": "@outputs('Compose')"
+                },
+                "runAfter": {
+                    "Send_message": [
+                        "Succeeded"
+                    ]
+                }
+            },
+            "Compose": {
+                "type": "Compose",
+                "inputs": "@triggerBody()",
+                "runAfter": {}
+            },
+            "Send_message": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "entityName": "movementsqueue",
+                        "message": {
+                            "contentData": "@outputs('Compose')"
+                        }
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "serviceBus",
+                        "operationId": "sendMessage",
+                        "serviceProviderId": "/serviceProviders/serviceBus"
                     }
                 },
-                "runAfter": {}
+                "runAfter": {
+                    "Compose": [
+                        "Succeeded"
+                    ]
+                }
             }
         },
         "triggers": {

@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "k8k8k8-28ed"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "k8k8k8-28ed"
+  template:
+    metadata:
+      labels:
+        app: "k8k8k8-28ed"
+    spec:
+      containers:
+        - name: "k8k8k8-28ed"
+          image: "k8try20.azurecr.io/k8k8k8"
+          ports:
+          - containerPort: 80

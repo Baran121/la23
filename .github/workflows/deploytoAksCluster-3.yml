@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: k8try20.azurecr.io
+        username: ${{ secrets.acr_k8try20_username }}
+        password: ${{ secrets.acr_k8try20_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t k8try20.azurecr.io/k8k8k8:${{ github.sha }} --label dockerfile-path=Dockerfile
+        docker push k8try20.azurecr.io/k8k8k8:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_k8k8k8_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep k8k8k8b28b | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace k8k8k8b28b`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: k8k8k8b28b
+        container-registry-url: k8try20.azurecr.io
+        container-registry-username: ${{ secrets.acr_k8try20_username }}
+        container-registry-password: ${{ secrets.acr_k8try20_password }}
+        secret-name: k8k8k8dockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: k8k8k8b28b
+        manifests: |
+          manifests/deployment-3.yml
+          manifests/service-3.yml
+        images: |
+          k8try20.azurecr.io/k8k8k8:${{ github.sha }}
+        imagepullsecrets: |
+          k8k8k8dockerauth
